@@ -1,44 +1,68 @@
 # Thompson Sampling
 
-Thompson Sampling implementation for the multi-armed bandit problem, applied to ad click-through rate (CTR) optimization. Implementations in both Python and R.
+> Multi-armed bandit solver using Thompson Sampling for ad click-through rate (CTR) optimization.
 
-## How It Works
+## What It Does
 
-Thompson Sampling is a probabilistic reinforcement learning algorithm that balances exploration and exploitation using Bayesian inference:
+Simulates an online ad-selection scenario where an algorithm must decide which of 10 ads to show in each round, learning from binary rewards (click / no click) to maximise total clicks over 10,000 rounds.
 
-1. Model each ad's CTR as a Beta distribution: `Beta(successes + 1, failures + 1)`
-2. Sample a random value from each ad's distribution
-3. Select the ad with the highest sampled value
-4. Update the distribution based on the observed reward (click or no click)
+## Methodology
 
-Unlike Upper Confidence Bound (UCB), Thompson Sampling is **probabilistic** — it naturally explores uncertain options while exploiting known good ones.
+Thompson Sampling is a Bayesian approach to the exploration–exploitation trade-off:
+
+1. **Model** — each ad's unknown CTR is modelled with a Beta distribution: `Beta(α, β)` where `α = successes + 1` and `β = failures + 1`.
+2. **Sample** — draw a random value from every ad's current Beta distribution.
+3. **Select** — pick the ad whose sample is highest.
+4. **Update** — observe the reward and increment `α` (click) or `β` (no click).
+
+Because the Beta distribution naturally narrows as evidence accumulates, the algorithm explores uncertain ads early on and gradually exploits the best performer.
 
 ## Dataset
 
-`Ads_CTR_Optimisation.csv` — 10,000 rounds × 10 ads. Each cell is a binary reward (1 = click, 0 = no click) from a simulated ad campaign.
+`Ads_CTR_Optimisation.csv` — 10,000 rows × 10 columns. Each cell is a binary reward (1 = click, 0 = no click) from a simulated ad campaign.
 
-## Usage
+## Dependencies
 
-### Python
+| Language | Packages |
+|----------|----------|
+| Python 3 | `numpy`, `matplotlib`, `pandas` |
+| R        | base (no extra packages) |
+
+## How to Run
+
+### 🐍 Python
 
 ```bash
 pip install numpy matplotlib pandas
 python thompson_sampling.py
 ```
 
-### R
+### 📊 R
 
 ```r
+Rscript thompson_sampling.R
+# or inside an R session:
 source("thompson_sampling.R")
 ```
 
-Both scripts output a histogram showing which ad was selected most frequently (the algorithm converges on the best-performing ad).
+Both scripts print the total reward and display a histogram showing which ad the algorithm converged on.
+
+## Tech Stack
+
+| | |
+|---|---|
+| 🐍 Python 3 | Core implementation |
+| 📊 R | Alternative implementation |
+| 🔢 NumPy | Numerical computing |
+| 📈 Matplotlib | Visualisation |
+| 🐼 pandas | Data loading |
+| 📐 Beta Distribution | Bayesian prior/posterior |
 
 ## Known Issues
 
-- Hardcoded file path — expects `Ads_CTR_Optimisation.csv` in the working directory
-- No train/test split — runs on the full dataset sequentially (appropriate for online learning)
-- `import random` is inside the loop section rather than at the top of the file (Python style issue)
+- Dataset is fully simulated; real-world CTRs would require a live feedback loop.
+- No command-line arguments yet — round count and ad count are constants at the top of each script.
+- The R script's `sys.frame(1)$ofile` path resolution only works when the file is `source()`-d; when run with `Rscript` it falls back to `getwd()`.
 
 ## License
 
