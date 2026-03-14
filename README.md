@@ -25,7 +25,7 @@ Because the Beta distribution naturally narrows as evidence accumulates, the alg
 
 | Language | Packages |
 |----------|----------|
-| Python 3 | `numpy`, `matplotlib`, `pandas` |
+| Python 3 | `matplotlib`, `pandas` |
 | R        | base (no extra packages) |
 
 ## How to Run
@@ -33,7 +33,7 @@ Because the Beta distribution naturally narrows as evidence accumulates, the alg
 ### 🐍 Python
 
 ```bash
-pip install numpy matplotlib pandas
+pip install -r requirements.txt
 python thompson_sampling.py
 ```
 
@@ -53,7 +53,6 @@ Both scripts print the total reward and display a histogram showing which ad the
 |---|---|
 | 🐍 Python 3 | Core implementation |
 | 📊 R | Alternative implementation |
-| 🔢 NumPy | Numerical computing |
 | 📈 Matplotlib | Visualisation |
 | 🐼 pandas | Data loading |
 | 📐 Beta Distribution | Bayesian prior/posterior |

@@ -6,7 +6,6 @@ import os
 import random
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 
 # ---------------------------------------------------------------------------
@@ -36,6 +35,7 @@ def run_thompson_sampling(data: pd.DataFrame, n_rounds: int, n_ads: int):
     rewards_1 = [0] * n_ads  # successes per ad
     rewards_0 = [0] * n_ads  # failures per ad
     total_reward = 0
+    values = data.to_numpy()
 
     for n in range(n_rounds):
         ad = 0
@@ -47,7 +47,7 @@ def run_thompson_sampling(data: pd.DataFrame, n_rounds: int, n_ads: int):
                 ad = i
 
         ads_selected.append(ad)
-        reward = data.values[n, ad]
+        reward = values[n, ad]
 
         if reward == 1:
             rewards_1[ad] += 1
